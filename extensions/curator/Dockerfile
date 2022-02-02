@@ -2,6 +2,8 @@ FROM bitnami/elasticsearch-curator:5.8.1
 
 USER root
 
+COPY ./config /usr/share/curator/config/
+
 RUN install_packages cron && \
     echo \
         '* * * * *' \
