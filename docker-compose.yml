@@ -16,29 +16,34 @@ services:
       # Use single node discovery in order to disable production mode and avoid bootstrap checks.
       # see: https://www.elastic.co/guide/en/elasticsearch/reference/current/bootstrap-checks.html
       discovery.type: single-node
+    volumes:
+      - elasticsearch:/usr/share/elasticsearch/data
     networks:
       - elk
     restart: unless-stopped
 
-#  logstash:
-#    build:
-#      context: logstash/
-#      args:
-#        ELK_VERSION: $ELK_VERSION
-##    volumes:
-##      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,z
-##      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,z
-#    ports:
-#      - "5044:5044"
-#      - "5000:5000/tcp"
-#      - "5000:5000/udp"
+
+  logstash:
+    image: matecat/matesub-elk-logstash
+    build:
+      context: logstash/
+      args:
+        ELK_VERSION: $ELK_VERSION
+#    volumes:
+#      - ./logstash/config/logstash.yml:/usr/share/logstash/config/logstash.yml:ro,z
+#      - ./logstash/pipeline:/usr/share/logstash/pipeline:ro,z
+    ports:
+      - "5044:5044"
+      - "5000:5000/tcp"
+      - "5000:5000/udp"
 #      - "9600:9600"
-#    environment:
-#      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
-#    networks:
-#      - elk
-#    depends_on:
-#      - elasticsearch
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+    networks:
+      - elk
+    depends_on:
+      - elasticsearch
+    restart: unless-stopped
 
   curator:
     image: matecat/matesub-elk-curator
@@ -64,6 +69,9 @@ services:
       - elasticsearch
     restart: unless-stopped
 
+volumes:
+  elasticsearch:
+    external: true
 
 networks:
   elk:
