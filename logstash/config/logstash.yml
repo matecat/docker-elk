@@ -11,3 +11,5 @@ xpack.monitoring.elasticsearch.hosts: [ "http://internal-matesub-elk-logger-1671
 xpack.monitoring.enabled: true
 xpack.monitoring.elasticsearch.username: elastic
 xpack.monitoring.elasticsearch.password: Hard2Translate!
+
+pipeline.ecs_compatibility: disabled
