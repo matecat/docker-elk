@@ -43,6 +43,11 @@ services:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
     networks:
       - elk
+    logging:
+      driver: "json-file"
+      options:
+        max-size: 50g
+        max-file: "3"
     depends_on:
       - elasticsearch
     restart: unless-stopped
